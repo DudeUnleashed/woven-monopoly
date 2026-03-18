@@ -1,0 +1,1 @@
+# loads board.json and handles boardstate
