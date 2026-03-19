@@ -5,6 +5,7 @@ A Ruby CLI application that simulates a deterministic game of Monopoly using pre
 ## Setup
 
 ```bash
+git clone https://github.com/DudeUnleashed/woven-monopoly.git
 bundle install
 ```
 
