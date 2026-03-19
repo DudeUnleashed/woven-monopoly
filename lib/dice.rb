@@ -2,21 +2,21 @@
 
 require 'json'
 
-class Dice 
-    attr_reader :rolls
+class Dice
+  attr_reader :rolls
 
-    def initialize(file_path)
-            @rolls = JSON.parse(File.read(file_path))
-            @current = 0
-    end
+  def initialize(file_path)
+    @rolls = JSON.parse(File.read(file_path))
+    @current = 0
+  end
 
-    def next_roll
-            roll = @rolls[@current]
-            @current += 1
-            roll
-    end
+  def next_roll
+    roll = @rolls[@current]
+    @current += 1
+    roll
+  end
 
-    def rolls_remaining?
-            @current < @rolls.length
-    end
+  def rolls_remaining?
+    @current < @rolls.length
+  end
 end

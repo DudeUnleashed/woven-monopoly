@@ -1,44 +1,33 @@
-## Woven coding test
+# Woven Monopoly
 
-Your task is to write an application to play the game of Woven Monopoly.
+A Ruby CLI application that simulates a deterministic game of Monopoly using pre-defined dice rolls.
 
-In Woven Monopoly, when the dice rolls are set ahead of time, the game is deterministic.
+## Setup
 
-### Game rules
-* There are four players who take turns in the following order:
-  * Peter
-  * Billy
-  * Charlotte
-  * Sweedal
-* Each player starts with $16
-* Everybody starts on GO
-* You get $1 when you pass GO (this excludes your starting move)
-* If you land on a property, you must buy it
-* If you land on an owned property, you must pay rent to the owner
-* If the same owner owns all property of the same colour, the rent is doubled
-* Once someone is bankrupt, whoever has the most money remaining is the winner
-* There are no chance cards, jail or stations
-* The board wraps around (i.e. you get to the last space, the next space is the first space)
+```bash
+bundle install
+```
 
+## Usage
 
-### Your task
-* Load in the board from board.json
-* Implement game logic as per the rules
-* Load in the given dice rolls files and simulate the game
-  * Who would win each game?
-  * How much money does everybody end up with?
-  * What spaces does everybody finish on?
+```bash
+ruby main.rb rolls1              # simulate game with first set of dice rolls
+ruby main.rb rolls2              # simulate game with second set of dice rolls
+ruby main.rb rolls1 --detailed   # include turn-by-turn descriptions
+```
 
+## Running Tests
 
-The specifics and implementation of this code is completely up to you!
+```bash
+bundle exec rspec
+```
 
-### What we are looking for:
-* We are a Ruby house, however feel free to pick the language you feel you are strongest in.
-* Code that is well thought out and tested
-* Clean and readable code
-* Extensibility should be considered
-* A git commit-history would be preferred, with small changes committed often so we can see your approach
+## Design
 
-Please include a readme with any additional information you would like to include, including instructions on how to test and execute your code.  You may wish to use it to explain any design decisions.
+The application is split into small, single-responsibility classes:
 
-Despite this being a small command line app, please approach this as you would a production problem using whatever approach to coding and testing you feel appropriate.
+- **Tile** — represents a board space (property or GO)
+- **Player** — tracks name, money, position, and bankruptcy
+- **Dice** — reads and serves pre-defined rolls from JSON
+- **Board** — loads tiles from JSON, handles position lookup and colour ownership checks
+- **Game** — orchestrates the game loop, applying rules each turn
