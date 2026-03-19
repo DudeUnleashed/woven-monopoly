@@ -50,4 +50,36 @@ RSpec.describe Game do
       expect(game2.winner.name).to be_a(String)
     end
   end
+
+  describe "#handle_landing on own property" do
+    it "does not charge you when landing on own property" do
+      game.play
+      owner = game.players.find { |p| game.board.tiles.any? { |t| t.owner == p } } # finds a player that owns a tile
+      tile = game.board.tiles.find { |t| t.owner == owner } # finds a tile that the owner owns
+      money_before = owner.money
+      game.send(:handle_landing, owner, tile) # simulates player landing on their own space
+      expect(owner.money).to eq(money_before)
+    end
+  end
+
+  describe "game ends when rolls run out instead of bankruptcy" do
+    it "finishes without bankruptcy if rolls run out" do
+      require 'json'
+      require 'tempfile'
+
+      # creates a shorter game with the first 8 rolls from rolls_1.json where the game wont end in bankruptcy
+      rolls = JSON.parse(File.read("data/rolls_1.json")).first(8)
+      temp = Tempfile.new(['short_rolls', '.json'])
+      temp.write(rolls.to_json)
+      temp.close
+
+      short_game = Game.new("data/board.json", temp.path)
+      short_game.play
+
+      expect(short_game.players.none?(&:bankrupt?)).to be true
+      expect(short_game.winner).not_to be_nil
+
+      temp.unlink
+    end
+  end
 end

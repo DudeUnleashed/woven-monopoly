@@ -15,8 +15,10 @@ class Player
   def move(spaces, board_size)
     old_position = @position
     @position = (@position + spaces) % board_size
-    # passed go if new position is behind old position
-    @position < old_position # returns true if passes go for game logic
+    # passed go if spaces moved is larger than the board spaces 
+    # (uses this to cover cases where roll is larger than board size where previous logic may have missed it passing go)
+    crossed_go = (old_position + spaces) >= board_size
+    crossed_go
   end
 
   def collect(amount)

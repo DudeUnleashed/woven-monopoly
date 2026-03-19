@@ -25,7 +25,7 @@ class Game
       roll = @dice.next_roll
       old_tile = @board.tile_at(player.position)
 
-      passed_go = player.move(roll, @board.size) # player.move returns a bool if the players new position is behind the old, therefore passing go
+      passed_go = player.move(roll, @board.size) # player.move returns a bool if the move would cause the board to loop
       player.collect(GO_REWARD) if passed_go
 
       tile = @board.tile_at(player.position)
@@ -78,6 +78,9 @@ class Game
     return nil unless tile.property? # skips logic if tile is go
 
     if tile.owned?
+      if tile.owner == player # landing on own property, skip rent payment
+        return "lands on own space"
+      end
       rent = tile.price
       if @board.all_colour_owned_by?(tile.colour, tile.owner) # is the check to see if the owner has all the colour spaces and doubles rent
         rent *= 2

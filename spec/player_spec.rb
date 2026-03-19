@@ -27,8 +27,12 @@ RSpec.describe Player do
     end
 
     it "returns true when passing GO" do
-      player.move(5, 9) # move off of go first
-      expect(player.move(6, 9)).to be true # passes go
+      player.move(3, 9) # moves onto the board
+      expect(player.move(8, 9)).to be true # passes go
+    end
+
+    it "detects passing go with a roll larger than the board on first turn" do
+      expect(player.move(11, 9)).to be true
     end
 
     it "returns false when not passing GO" do
